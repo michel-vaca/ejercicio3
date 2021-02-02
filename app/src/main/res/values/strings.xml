@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ejercicio3</string>
+    <string name="stTituloApp">PokeSearcher</string>
+    <string name="base_url">https://pokeapi.co/</string>
+</resources>
