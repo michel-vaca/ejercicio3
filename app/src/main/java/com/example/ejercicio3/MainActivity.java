@@ -60,7 +60,7 @@ lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
         Pokemon pokemon = (Pokemon) adapterView.getAdapter().getItem(i);
-        Toast.makeText(MainActivity.this, pokemon.getName(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(MainActivity.this, pokemon.getName(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, MainActivity2.class);
 
         Bundle bundle = new Bundle();                                                 // para cargar imagenes desde la carpeta draw
@@ -84,8 +84,7 @@ lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
     public void onErrorResponse(VolleyError error) {
         pbConexion.setVisibility(View.GONE);// en caso de error en conexion quitas la barra de cargar
        // Log.d("RESPUESTA", error.getMessage());
-        Toast.makeText(this, "Error conexion"
-                , Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.stErrorConexion), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -94,6 +93,8 @@ lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
         pbConexion.setVisibility(View.GONE);// en caso de error en conexion quitas la barra de cargar
         // tienes que sustituir el for de arrib para llenar tu listview con una conexion y llenado del arreglo datos con esa conexion
        // Log.d("RESPUESTA", response.toString());
+
+
 
 
         try{

@@ -6,4 +6,5 @@
     <string name="stAltura">Height:</string>
     <string name="stPeso">Weight:</string>
     <string name="stTipo">Type:</string>
+    <string name="stErrorConexion">Error en la conexion</string>
 </resources>
