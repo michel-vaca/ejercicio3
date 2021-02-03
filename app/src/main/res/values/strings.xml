@@ -2,4 +2,8 @@
     <string name="app_name">ejercicio3</string>
     <string name="stTituloApp">PokeSearcher</string>
     <string name="base_url">https://pokeapi.co/</string>
+    <string name="stExpbase">Base experience:</string>
+    <string name="stAltura">Height:</string>
+    <string name="stPeso">Weight:</string>
+    <string name="stTipo">Type:</string>
 </resources>

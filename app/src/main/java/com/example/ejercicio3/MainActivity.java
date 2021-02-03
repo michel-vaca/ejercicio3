@@ -2,9 +2,11 @@ package com.example.ejercicio3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
     String url;
     RequestQueue queue;
     JsonObjectRequest request;
+    Adaptador adaptador;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +56,23 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
 
 
 
+lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
+        Pokemon pokemon = (Pokemon) adapterView.getAdapter().getItem(i);
+        Toast.makeText(MainActivity.this, pokemon.getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this, MainActivity2.class);
 
+        Bundle bundle = new Bundle();                                                 // para cargar imagenes desde la carpeta draw
+        bundle.putString("url",pokemon.getUrl());
+        intent.putExtras(bundle);
+        startActivity(intent);
 
+        //aqui programas lo que vas a mandar hacia la otra activity
     }
+});
+    }
+
 
 
 
@@ -66,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
     @Override
     public void onErrorResponse(VolleyError error) {
         pbConexion.setVisibility(View.GONE);// en caso de error en conexion quitas la barra de cargar
-        Log.d("RESPUESTA", error.getMessage());
+       // Log.d("RESPUESTA", error.getMessage());
         Toast.makeText(this, "Error conexion"
                 , Toast.LENGTH_SHORT).show();
     }
@@ -76,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
     public void onResponse(JSONObject response) {
         pbConexion.setVisibility(View.GONE);// en caso de error en conexion quitas la barra de cargar
         // tienes que sustituir el for de arrib para llenar tu listview con una conexion y llenado del arreglo datos con esa conexion
-        Log.d("RESPUESTA", response.toString());
+       // Log.d("RESPUESTA", response.toString());
 
 
         try{
@@ -88,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
                 Pokemon pokemon = new Pokemon(i,name,url,"#"+(i+1));
                 datos.add(pokemon);
             }
-            Adaptador adaptador = new Adaptador(this, datos );
+            adaptador= new Adaptador(this, datos );
             lv.setAdapter(adaptador);
           //  Toast.makeText(this,  "cuenta " +  response.getInt("count"), Toast.LENGTH_SHORT).show();
 
@@ -98,4 +115,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         }/**/
 
     }
+
+
+
 }
