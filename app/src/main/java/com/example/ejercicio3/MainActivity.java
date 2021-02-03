@@ -14,6 +14,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ejercicio3.model.Pokemon;
@@ -24,13 +25,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements Response.ErrorListener, Response.Listener<JSONArray> {
+public class MainActivity extends AppCompatActivity implements Response.ErrorListener, Response.Listener<JSONObject> {
     ListView lv;
     ArrayList<Pokemon> datos= new ArrayList<>();
     ProgressBar pbConexion;
     String url;
     RequestQueue queue;
-    JsonArrayRequest request;
+    JsonObjectRequest request;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         url=getResources().getString(R.string.base_url)  + "api/v2/pokemon?limit=151";
         /* probando que url esta bien*/
         // url="https://pokeapi.co/api/v2/pokemon?limit=151";
-        request =new JsonArrayRequest(Request.Method.GET,url,null,this,this);
+        request =new JsonObjectRequest(Request.Method.GET,url,null,this,this);
         queue.add(request);
         //for para probar que el listview funciona correctamente
         /*for(int i=0;i<10;i++) {
@@ -65,31 +66,36 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
     @Override
     public void onErrorResponse(VolleyError error) {
         pbConexion.setVisibility(View.GONE);// en caso de error en conexion quitas la barra de cargar
-        Toast.makeText(this, "Error conexion" , Toast.LENGTH_SHORT).show();
+        Log.d("RESPUESTA", error.getMessage());
+        Toast.makeText(this, "Error conexion"
+                , Toast.LENGTH_SHORT).show();
     }
 
 
     @Override
-    public void onResponse(JSONArray response) {
+    public void onResponse(JSONObject response) {
         pbConexion.setVisibility(View.GONE);// en caso de error en conexion quitas la barra de cargar
         // tienes que sustituir el for de arrib para llenar tu listview con una conexion y llenado del arreglo datos con esa conexion
         Log.d("RESPUESTA", response.toString());
-        JSONObject jsonObject;
+
 
         try{
-            for (int i=0; i<response.length();i++) {
-                jsonObject = response.getJSONObject(i);
-                String name = jsonObject.getString("name");
-                String url = jsonObject.getString("url");
+            JSONArray jsonObject= response.getJSONArray("results");
+            for (int i=0; i<jsonObject.length();i++) {
+
+                String name= jsonObject.getJSONObject(i).getString("name");
+                String url =jsonObject.getJSONObject(i).getString("url");
                 Pokemon pokemon = new Pokemon(i,name,url,"#"+(i+1));
                 datos.add(pokemon);
             }
             Adaptador adaptador = new Adaptador(this, datos );
             lv.setAdapter(adaptador);
+          //  Toast.makeText(this,  "cuenta " +  response.getInt("count"), Toast.LENGTH_SHORT).show();
+
         }catch(JSONException e){
 
 
-        }
+        }/**/
 
     }
 }
